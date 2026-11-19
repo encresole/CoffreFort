@@ -1,8 +1,9 @@
 import model.Configs;
-import view.FenetrePrincipale;
+
+import view.ViewManager;
 
 public class App {
     public static void main(String[] args) {
-        new FenetrePrincipale(new Configs());
+        new ViewManager(new Configs());
     }
 }
