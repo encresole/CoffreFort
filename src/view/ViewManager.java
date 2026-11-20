@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.JFrame;
 
+import controller.Authentification;
 import model.Configs;
 
 public class ViewManager extends JFrame{
@@ -13,12 +14,16 @@ public class ViewManager extends JFrame{
 	private FenetrePrincipale fenetrePrincipale;	
 	private Connexion connexion;
 	private CreationCompte creationCompte;
+	private Accueil accueil;
+	
+	private Authentification auth;
 	
 	
-	public ViewManager(Configs configs) {
+	public ViewManager(Configs configs, Authentification auth) {
 		super("Coffre fort");
 		this.setSize(configs.FrameWidth, configs.frameHeight);
 		this.setLayout(cardLayout);
+		this.auth = auth;
 		initLayout();
 		
 		showFenetrePrincipale();
@@ -28,10 +33,12 @@ public class ViewManager extends JFrame{
 	private void initLayout() {
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.add(fenetrePrincipale, "principale");
-		connexion = new Connexion(this);
+		connexion = new Connexion(this, auth);
 		this.add(connexion, "connexion");
-		creationCompte = new CreationCompte(this);
+		creationCompte = new CreationCompte(this, auth);
 		this.add(creationCompte, "creationCompte");
+		accueil = new Accueil(this);
+		this.add(accueil, "acceuil");
 	}
 	
 	public void showFenetrePrincipale() {
@@ -44,6 +51,10 @@ public class ViewManager extends JFrame{
 	
 	public void showCreationCompte() {
 		cardLayout.show(this.getContentPane(), "creationCompte");
+	}
+	
+	public void showAccueil() {
+		cardLayout.show(this.getContentPane(), "acceuil");
 	}
 
 }

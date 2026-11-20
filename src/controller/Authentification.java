@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.HashMap;
-
 import model.ServeurStorage;
 
 public class Authentification {
@@ -11,15 +9,14 @@ public class Authentification {
 		this.serveurStorage = s;
 	}
 	
-	public Boolean ok(String user, String password, HashMap<String, String> userPassword) {
-		if (userPassword.containsKey(user)) {
-			return userPassword.get(user) == password;
-		} else {
-			return false;
-		}
+	public Boolean ok(String user, String password) {
+		String secret = serveurStorage.getPassword(user);
+		if (secret.isEmpty()) return false;
+		System.out.println("[Auth] Bon mot de passe : " + secret.equals(password));
+		return secret.equals(password);
 	}
 	
 	public void addUser(String user, String password) {
-		serveurStorage.addUser(user, password);
+		serveurStorage.addUser(user, password); // contraite déjà présent vérifiée plus tard
 	}
 }

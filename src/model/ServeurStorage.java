@@ -2,32 +2,42 @@ package model;
 
 import java.util.HashMap;
 
+import controller.Erreur;
+
 public class ServeurStorage {
 	
 	private HashMap<String, String> user_password = new HashMap<String, String>();
 	
+	public Boolean containsUser(String user) {
+		return user_password.containsKey(user);
+	}
+	
 	public void addUser(String user, String password) {
-		if (user_password.containsKey(user)) {
-			System.err.println("Nom d'utilisateur déjà pris");
-		} else {
-			user_password.put(user, password);
-		}
+		if (containsUser(user)) {new Erreur("Nom d'utilisateur déjà pris"); return;}
+		if (password.isBlank()) {new Erreur("Mot de passe vide"); return;}
+		user_password.put(user, password);
+		System.out.println("[Serveur] Utilisateur ajouté");
 	}
 	
 	public void removeUser(String user) {
-		if (user_password.containsKey(user)) {
-			user_password.remove(user);
-		} else {
-			System.err.println("On ne peut pas supprimer un user qui n'existe pas");
-		}
+		if (!containsUser(user)) {new Erreur("On ne peut pas supprimer un user qui n'existe pas"); return;}
+		System.out.println("[Serveur] Utilisateur supprimé");
+		user_password.remove(user);
 	}
 	
 	public void updatePassword(String user, String newPassword) {
-		if (user_password.containsKey(user)) {
-			user_password.put(user, newPassword);
-		} else {
-			System.err.println("L'user n'existe pas encore, on ne peut docn pas changer son mot de passe");
-		}	
+		if (!containsUser(user)) {new Erreur("L'utilisateur n'existe pas encore, on ne peut donc pas changer son mot de passe"); return;}
+		user_password.put(user, newPassword);
+		System.out.println("[Serveur] Mot de passe modifié");
 	}
 	
+
+	public String getPassword(String user) {
+		if (!containsUser(user)) {
+			new Erreur("L'utilisateur n'existe pas");
+			return "";
+		}
+		System.out.println("[Serveur] Utilisateur trouvé");
+		return user_password.get(user);
+	}
 }
