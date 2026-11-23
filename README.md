@@ -1,6 +1,5 @@
 ﻿# CoffreFort
 reste à faire :
-- Authentification client
 - lancer plusieurs client à la fois
 - crud sur les données
 - cryptage des données

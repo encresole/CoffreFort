@@ -48,7 +48,7 @@ public class CreationCompte  extends JPanel{
 		valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (password.getText().equals(confirm.getText())) {
+				if (password.getText().equals(new String(confirm.getPassword()))) {
 					viewManager.client.creationCompte(username.getText().toLowerCase().trim(), password.getText());
 				} else {
 					new Erreur("Mot de passe différent de la validation");

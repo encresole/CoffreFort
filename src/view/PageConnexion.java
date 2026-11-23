@@ -42,7 +42,7 @@ public class PageConnexion extends JPanel{
 		reponses.add(password);
 		this.add(reponses, BorderLayout.CENTER);
 	
-		connexion.addActionListener(e -> viewManager.client.demandeConnexion(username.getText().toLowerCase().trim(), password.getText()));
+		connexion.addActionListener(e -> viewManager.client.demandeConnexion(username.getText().toLowerCase().trim(), new String(password.getPassword())));
 		retour.addActionListener(e -> viewManager.showFenetrePrincipale());
 		oublie.addActionListener(e -> modalOublie());
 		actions.add(connexion, BorderLayout.SOUTH);
