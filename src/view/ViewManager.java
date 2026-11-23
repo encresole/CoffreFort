@@ -19,9 +19,9 @@ public class ViewManager extends JFrame{
 	private Authentification auth;
 	
 	
-	public ViewManager(Configs configs, Authentification auth) {
+	public ViewManager(Authentification auth) {
 		super("Coffre fort");
-		this.setSize(configs.FrameWidth, configs.frameHeight);
+		this.setSize(Configs.FrameWidth, Configs.frameHeight);
 		this.setLayout(cardLayout);
 		this.auth = auth;
 		initLayout();

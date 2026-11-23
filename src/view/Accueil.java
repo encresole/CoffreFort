@@ -10,6 +10,8 @@ public class Accueil extends JPanel{
 	
 	public Accueil(ViewManager viewManager) {
 		this.setLayout(new GridBagLayout());
-		this.add(new JLabel("page de connexion !"));
+		this.add(new JLabel("page de d'accueil !"));
 	}
+	
+	
 }
