@@ -1,3 +1,4 @@
+package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,14 +6,23 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import controller.Authentification;
 import controller.Erreur;
 import model.Configs;
+import model.ServeurStorage;
+import view.ServeurUI;
 
 public class Serveur {
 	
 	ServerSocket server;
+	ServeurStorage storage;
+	ServeurUI ui;
+	public Authentification auth;
 	
 	public Serveur() {
+		ui = new ServeurUI(this);
+		storage = new ServeurStorage();
+		auth = new Authentification(storage);
 		try {
 			server = new ServerSocket(Configs.PORT);
 			System.out.println("[Serveur] Ecoute sur le port " + Configs.PORT);
@@ -42,6 +52,13 @@ public class Serveur {
 			new Erreur("Erreur lors de la creation des i/o");
 			e.printStackTrace();
 		}
+	}
+	
+	public Boolean connexion(String s) {
+		String[] parts = s.split(";");
+		String username = parts[1];
+		String password = parts[2];
+		return auth.ok(username, password);
 	}
 	
 	

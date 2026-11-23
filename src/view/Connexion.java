@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.Authentification;
 import controller.Erreur;
 
 public class Connexion extends JPanel{
@@ -32,7 +31,7 @@ public class Connexion extends JPanel{
 	JButton oublie = new JButton("Mot de passe oublié");
 	JButton retour = new JButton("Retour");
 	
-	public Connexion(ViewManager viewManager, Authentification auth) {
+	public Connexion(ViewManager viewManager) {
 		this.setLayout(new BorderLayout());
 		
 		infos.setLayout(new GridLayout(2, 1));
@@ -49,7 +48,7 @@ public class Connexion extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (auth.ok(
+				if (viewManager.client.connexion(
 						username.getText().toLowerCase().trim(), password.getText().trim()
 				)) {
 					viewManager.showAccueil();
