@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.Erreur;
@@ -23,7 +24,7 @@ public class CreationCompte  extends JPanel{
 	JPanel reponses = new JPanel();
 	JTextField username = new JTextField();
 	JTextField password = new JTextField();
-	JTextField confirm = new JTextField();
+	JPasswordField confirm = new JPasswordField();
 	
 	JPanel actions = new JPanel();
 	JButton valider = new JButton("Valider la création");
@@ -48,7 +49,7 @@ public class CreationCompte  extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (password.getText().equals(confirm.getText())) {
-					//envoyer une requete de création
+					viewManager.client.creationCompte(username.getText().toLowerCase().trim(), password.getText());
 				} else {
 					new Erreur("Mot de passe différent de la validation");
 				}

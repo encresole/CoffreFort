@@ -12,7 +12,7 @@ public class ViewManager extends JFrame {
 	private CardLayout cardLayout = new CardLayout();
 
 	private FenetrePrincipale fenetrePrincipale;
-	private Connexion connexion;
+	private PageConnexion connexion;
 	private CreationCompte creationCompte;
 	private Accueil accueil;
 	public Client client;
@@ -20,6 +20,7 @@ public class ViewManager extends JFrame {
 	public ViewManager(Client client) {
 		super("Coffre fort (Client)");
 		this.client = client;
+		this.addWindowListener(client);
 		this.setSize(Configs.FrameWidth, Configs.frameHeight);
 		this.setLayout(cardLayout);
 		initLayout();
@@ -30,7 +31,7 @@ public class ViewManager extends JFrame {
 	private void initLayout() {
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.add(fenetrePrincipale, "principale");
-		connexion = new Connexion(this);
+		connexion = new PageConnexion(this);
 		this.add(connexion, "connexion");
 		creationCompte = new CreationCompte(this);
 		this.add(creationCompte, "creationCompte");

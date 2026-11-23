@@ -1,4 +1,6 @@
 package main;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,10 +11,11 @@ import java.net.Socket;
 import controller.Authentification;
 import controller.Erreur;
 import model.Configs;
+import model.Connexion;
 import model.ServeurStorage;
 import view.ServeurUI;
 
-public class Serveur {
+public class Serveur implements WindowListener {
 	
 	ServerSocket server;
 	ServeurStorage storage;
@@ -32,7 +35,7 @@ public class Serveur {
 				lanceClient(client);
 			}
 		} catch (IOException e) {
-			new Erreur("Erreur lors de la creation du ServerSocket");
+			new Erreur("[Serveur] Erreur lors de la creation du ServerSocket");
 		}
 	}
 	
@@ -40,27 +43,80 @@ public class Serveur {
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+			out.println("ID;"+storage.addConnexion(new Connexion(client, in, out)));
 			String message;
 			while ((message = in.readLine()) != null) {
-				System.out.println("[Serveur] message lu : " + message);
+				interprete(message);
 			}
 			in.close();
 			out.close();
 			client.close();
 			System.out.println("[Serveur] Client deconnecté");
 		} catch (IOException e) {
-			new Erreur("Erreur lors de la creation des i/o");
+			new Erreur("[Serveur] Erreur lors de la creation des i/o");
 			e.printStackTrace();
 		}
 	}
 	
-	public Boolean connexion(String s) {
-		String[] parts = s.split(";");
-		String username = parts[1];
-		String password = parts[2];
-		return auth.ok(username, password);
+	public void interprete(String message) {
+		String[] parties = message.split(";");
+		if (parties.length == 4) {
+			if (parties[1].equals("SIGNUP")) {
+				creation(parties[2], parties[3]);
+			} else if (parties[1].equals("LOGIN")) {
+				connexion(Integer.parseInt(parties[0]), parties[2], parties[3]);
+			} else {
+				System.out.println("[Serveur] message lu : " + message);
+			}
+		} else {
+			System.out.println("[Serveur] message lu : " + message);
+		}
 	}
 	
+	private void creation(String username, String password) {
+		auth.addUser(username, password);
+	}
+	
+	private Boolean connexion(Integer id, String username, String password) {
+		PrintWriter out = storage.getConnexions().get(id).getOut();
+		Boolean reussi = auth.ok(username, password);
+		out.println("LOGIN;"+reussi.toString());
+		return reussi;
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		try {
+			server.close();
+		} catch (IOException e1) {
+			System.err.println("Erreur lors de la fermeture du serveur");
+		}
+		System.exit(0);
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
 	
 	public static void main(String[] args) {
 		new Serveur();

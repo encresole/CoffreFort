@@ -7,6 +7,8 @@ import controller.Erreur;
 public class ServeurStorage {
 	
 	private HashMap<String, String> user_password = new HashMap<String, String>();
+	private HashMap<Integer, Connexion> connexions = new HashMap<Integer, Connexion>();
+	private int nextId = 1;
 	
 	public Boolean containsUser(String user) {
 		return user_password.containsKey(user);
@@ -40,4 +42,19 @@ public class ServeurStorage {
 		System.out.println("[Serveur] Utilisateur trouvé");
 		return user_password.get(user);
 	}
+
+	public HashMap<Integer, Connexion> getConnexions() {
+		return connexions;
+	}
+
+	public void setConnexions(HashMap<Integer, Connexion> connexions) {
+		this.connexions = connexions;
+	}
+	
+	public Integer addConnexion(Connexion connexion) {
+		this.connexions.put(nextId, connexion);
+		nextId++;
+		return nextId - 1;
+	}
+
 }

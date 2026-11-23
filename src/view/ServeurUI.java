@@ -13,6 +13,7 @@ public class ServeurUI extends JFrame {
 	public ServeurUI(Serveur s) {
 		super("Serveur");
 		serveur = s;
+		this.addWindowListener(serveur);
 		this.setSize(Configs.FrameWidth, Configs.frameHeight);
 		this.setVisible(true);
 	}
