@@ -58,8 +58,8 @@ public class Connexion extends JPanel{
 				}
 			}
 		});
-		retour.addActionListener(_ -> viewManager.showFenetrePrincipale());
-		oublie.addActionListener(_ -> modalOublie());
+		retour.addActionListener(e -> viewManager.showFenetrePrincipale());
+		oublie.addActionListener(e -> modalOublie());
 		actions.add(connexion, BorderLayout.SOUTH);
 		actions.add(oublie, BorderLayout.SOUTH);
 		actions.add(retour, BorderLayout.SOUTH);
@@ -89,7 +89,7 @@ public class Connexion extends JPanel{
 		
 		
 		JButton ok = new JButton("fermer");
-		ok.addActionListener(_ -> frame.dispose());
+		ok.addActionListener(e -> frame.dispose());
 		frame.add(ok, BorderLayout.SOUTH);
 		frame.setVisible(true);
 	}

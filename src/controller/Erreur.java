@@ -24,7 +24,7 @@ public class Erreur extends Error {
 		frame.add(center);
 		
 		JButton ok = new JButton("fermer");
-		ok.addActionListener(_ -> frame.dispose());
+		ok.addActionListener(e -> frame.dispose());
 		frame.add(ok, BorderLayout.SOUTH);
 		frame.setVisible(true);
 	}

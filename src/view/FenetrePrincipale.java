@@ -39,7 +39,7 @@ public class FenetrePrincipale extends JPanel {
 	}
 	
 	private void setupButtons() {
-		connexion.addActionListener(_ -> viewManager.showConnexion());
-		creation.addActionListener(_ -> viewManager.showCreationCompte());
+		connexion.addActionListener(e -> viewManager.showConnexion());
+		creation.addActionListener(e -> viewManager.showCreationCompte());
 	}
 }
