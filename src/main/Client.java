@@ -21,12 +21,11 @@ public class Client implements WindowListener {
 	ViewManager ui;
 	
 	public Client() {
-		ui = new ViewManager(this);
-
 		try {
 			client = new Socket("localhost", Configs.PORT);
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
+			ui = new ViewManager(this);
 			this.boucleDeLecture();
 		} catch (UnknownHostException e) {
 			new Erreur("[Client Hôte inconnu");

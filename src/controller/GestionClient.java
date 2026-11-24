@@ -26,12 +26,15 @@ public class GestionClient extends Thread {
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 			id = serveur.storage.addConnexion(new Connexion(client, in, out));
 			out.println("ID;" + id);
+			serveur.ui.ajouteClient(id);
 			String message;
 			while ((message = in.readLine()) != null) {
 				serveur.interprete(message);
 			}
 		} catch (IOException e) {
 			System.err.println("[Serveur] Connexion perdue : " + e.getMessage() + "\nId client : " + id.toString());
+		} finally {
+			if (id != null) serveur.ui.retireClient(id);
 		}
 	}
 }

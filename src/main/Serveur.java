@@ -17,23 +17,23 @@ public class Serveur implements WindowListener {
 	
 	ServerSocket server;
 	public ServeurStorage storage;
-	ServeurUI ui;
+	public ServeurUI ui;
 	public Authentification auth;
 	
 	public Serveur() {
 		storage = new ServeurStorage();
 		auth = new Authentification(storage);
-		ui = new ServeurUI(this);
 		try {
 			server = new ServerSocket(Configs.PORT);
 			System.out.println("[Serveur] Ecoute sur le port " + Configs.PORT);
+			ui = new ServeurUI(this);
 			while (true) {
 				Socket client = server.accept();
 				System.out.println("[Serveur] Nouveau client connecté !");
 				new GestionClient(client, this).start();;
 			}
 		} catch (IOException e) {
-			new Erreur("[Serveur] Erreur lors de la creation du ServerSocket");
+			new Erreur("[Serveur] Erreur lors de la creation du ServerSocket : " + e);
 		}
 	}
 
