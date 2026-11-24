@@ -12,7 +12,7 @@ import controller.Erreur;
 import model.Configs;
 import view.ViewManager;
 
-public class Client extends Thread implements WindowListener {
+public class Client implements WindowListener {
 	Socket client;
 	BufferedReader in;
 	PrintWriter out;
@@ -21,24 +21,22 @@ public class Client extends Thread implements WindowListener {
 	ViewManager ui;
 	
 	public Client() {
-		
 		ui = new ViewManager(this);
-		
+
 		try {
 			client = new Socket("localhost", Configs.PORT);
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
-			this.run();
+			this.boucleDeLecture();
 		} catch (UnknownHostException e) {
 			new Erreur("[Client Hôte inconnu");
 		} catch (IOException e) {
 			new Erreur("[Client] Erreur de connexion");
-		}
+		}		
 	}	
 
 	
-	@Override
-	public void run() {
+	public void boucleDeLecture() {
 		try {
 			String message;
 			while ((message = in.readLine()) != null) {

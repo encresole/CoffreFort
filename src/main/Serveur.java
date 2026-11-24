@@ -1,63 +1,42 @@
 package main;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.Authentification;
 import controller.Erreur;
+import controller.GestionClient;
 import model.Configs;
-import model.Connexion;
 import model.ServeurStorage;
 import view.ServeurUI;
 
 public class Serveur implements WindowListener {
 	
 	ServerSocket server;
-	ServeurStorage storage;
+	public ServeurStorage storage;
 	ServeurUI ui;
 	public Authentification auth;
 	
 	public Serveur() {
-		ui = new ServeurUI(this);
 		storage = new ServeurStorage();
 		auth = new Authentification(storage);
+		ui = new ServeurUI(this);
 		try {
 			server = new ServerSocket(Configs.PORT);
 			System.out.println("[Serveur] Ecoute sur le port " + Configs.PORT);
 			while (true) {
 				Socket client = server.accept();
 				System.out.println("[Serveur] Nouveau client connecté !");
-				lanceClient(client);
+				new GestionClient(client, this).start();;
 			}
 		} catch (IOException e) {
 			new Erreur("[Serveur] Erreur lors de la creation du ServerSocket");
 		}
 	}
-	
-	public void lanceClient(Socket client) {
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-			out.println("ID;"+storage.addConnexion(new Connexion(client, in, out)));
-			String message;
-			while ((message = in.readLine()) != null) {
-				interprete(message);
-			}
-			in.close();
-			out.close();
-			client.close();
-			System.out.println("[Serveur] Client deconnecté");
-		} catch (IOException e) {
-			new Erreur("[Serveur] Erreur lors de la creation des i/o");
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void interprete(String message) {
 		String[] parties = message.split(";");
 		if (parties.length == 4) {
