@@ -63,17 +63,24 @@ public class Accueil extends JPanel {
 		JFileChooser chooser = new JFileChooser();
 		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			File fichier = chooser.getSelectedFile();
-			// TODO: envoyer le fichier au serveur
-			System.out.println("Fichier choisi : " + fichier);
+			viewManager.client.envoieFichier(fichier);
 		}
 	}
 
 	private void telechargerSelection() {
-		// TODO: télécharger les fichiers sélectionnés (liste.getSelectedValuesList())
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			for (String nom : liste.getSelectedValuesList()) {
+				viewManager.client.demandeFichier(nom, chooser.getSelectedFile());
+			}
+		}
 	}
 
 	private void supprimerSelection() {
-		// TODO: supprimer les fichiers sélectionnés (liste.getSelectedValuesList())
+		for (String nom : liste.getSelectedValuesList()) {
+			viewManager.client.supprimeFichier(nom);
+		}
 	}
 
 }

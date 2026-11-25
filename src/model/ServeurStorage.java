@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import controller.Erreur;
 
@@ -9,6 +10,7 @@ public class ServeurStorage {
 	private HashMap<String, String> user_password = new HashMap<String, String>();
 	private HashMap<Integer, Connexion> connexions = new HashMap<Integer, Connexion>();
 	private int nextId = 1;
+	private HashMap<String, HashMap<String, String>> fichiers = new HashMap<String, HashMap<String, String>>();
 	
 	public Boolean containsUser(String user) {
 		return user_password.containsKey(user);
@@ -55,6 +57,25 @@ public class ServeurStorage {
 		this.connexions.put(nextId, connexion);
 		nextId++;
 		return nextId - 1;
+	}
+	
+	public void addFichier(String user, String nom, String contenu) {
+		fichiers.putIfAbsent(user, new HashMap<String, String>());
+		fichiers.get(user).put(nom, contenu);
+	}
+	
+	public String getFichier(String user, String nom) {
+		if (!fichiers.containsKey(user)) return null;
+		return fichiers.get(user).get(nom);
+	}
+	
+	public Set<String> getNomsFichiers(String user) {
+		if (!fichiers.containsKey(user)) return Set.of();
+		return Set.copyOf(fichiers.get(user).keySet());
+	}
+	
+	public void removeFichier(String user, String nom) {
+		if (fichiers.containsKey(user)) fichiers.get(user).remove(nom);
 	}
 
 }

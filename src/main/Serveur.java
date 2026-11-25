@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Base64;
 
 import controller.Authentification;
 import controller.Erreur;
 import controller.GestionClient;
 import model.Configs;
+import model.Connexion;
 import model.ServeurStorage;
 import view.ServeurUI;
 
@@ -39,7 +41,10 @@ public class Serveur implements WindowListener {
 
 	public void interprete(String message) {
 		String[] parties = message.split(";");
-		if (parties.length == 4) {
+		if (parties.length >= 2 && (parties[1].equals("PUT") || parties[1].equals("LIST")
+				|| parties[1].equals("GET") || parties[1].equals("DELETE"))) {
+			fichier(Integer.parseInt(parties[0]), parties);
+		} else if (parties.length == 4) {
 			if (parties[1].equals("SIGNUP")) {
 				creation(parties[2], parties[3]);
 			} else if (parties[1].equals("LOGIN")) {
@@ -57,10 +62,50 @@ public class Serveur implements WindowListener {
 	}
 	
 	private Boolean connexion(Integer id, String username, String password) {
-		PrintWriter out = storage.getConnexions().get(id).getOut();
+		Connexion connexion = storage.getConnexions().get(id);
+		PrintWriter out = connexion.getOut();
 		Boolean reussi = auth.ok(username, password);
+		connexion.setUser(reussi ? username : null);
 		out.println("LOGIN;"+reussi.toString());
 		return reussi;
+	}
+	
+	private void fichier(Integer id, String[] parties) {
+		Connexion connexion = storage.getConnexions().get(id);
+		PrintWriter out = connexion.getOut();
+		String user = connexion.getUser();
+		if (user == null) {
+			out.println("ERREUR;Vous n'êtes pas connecté");
+			return;
+		}
+		if (parties[1].equals("PUT") && parties.length == 4) {
+			if (Base64.getDecoder().decode(parties[3]).length > Configs.TAILLE_MAX) {
+				out.println("ERREUR;Fichier trop volumineux");
+				return;
+			}
+			storage.addFichier(user, parties[2], parties[3]);
+			envoieListe(out, user);
+		} else if (parties[1].equals("LIST")) {
+			envoieListe(out, user);
+		} else if (parties[1].equals("GET") && parties.length == 3) {
+			String contenu = storage.getFichier(user, parties[2]);
+			if (contenu == null) {
+				out.println("ERREUR;Fichier introuvable");
+			} else {
+				out.println("FILE;" + parties[2] + ";" + contenu);
+			}
+		} else if (parties[1].equals("DELETE") && parties.length == 3) {
+			storage.removeFichier(user, parties[2]);
+			envoieListe(out, user);
+		}
+	}
+	
+	private void envoieListe(PrintWriter out, String user) {
+		String message = "LIST";
+		for (String nom : storage.getNomsFichiers(user)) {
+			message += ";" + nom;
+		}
+		out.println(message);
 	}
 
 	@Override

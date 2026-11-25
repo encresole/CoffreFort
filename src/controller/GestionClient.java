@@ -29,7 +29,7 @@ public class GestionClient extends Thread {
 			serveur.ui.ajouteClient(id);
 			String message;
 			while ((message = in.readLine()) != null) {
-				serveur.interprete(message);
+				if (message.startsWith(id + ";")) serveur.interprete(message);
 			}
 		} catch (IOException e) {
 			System.err.println("[Serveur] Connexion perdue : " + e.getMessage() + "\nId client : " + id.toString());

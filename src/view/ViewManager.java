@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.CardLayout;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -53,6 +54,10 @@ public class ViewManager extends JFrame {
 
 	public void showAccueil() {
 		cardLayout.show(this.getContentPane(), "acceuil");
+	}
+
+	public void setFichiers(List<String> noms) {
+		accueil.setFichiers(noms);
 	}
 
 }

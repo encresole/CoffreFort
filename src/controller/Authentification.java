@@ -17,6 +17,6 @@ public class Authentification {
 	}
 	
 	public void addUser(String user, String password) {
-		serveurStorage.addUser(user, password); // contraite déjà présent vérifiée plus tard
+		serveurStorage.addUser(user, password);
 	}
 }

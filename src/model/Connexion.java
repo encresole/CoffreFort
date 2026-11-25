@@ -8,6 +8,7 @@ public class Connexion {
 	private Socket client;
 	private BufferedReader in;
 	private PrintWriter out;
+	private String user; // null tant que le client n'est pas connecté
 
 	public Connexion(Socket client, BufferedReader in, PrintWriter out) {
 		this.client = client;
@@ -26,5 +27,13 @@ public class Connexion {
 
 	public PrintWriter getOut() {
 		return out;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 }
