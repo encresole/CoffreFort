@@ -3,6 +3,8 @@ package model;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import controller.Erreur;
 
 public class ServeurStorage {
@@ -20,7 +22,7 @@ public class ServeurStorage {
 		if (containsUser(user)) {new Erreur("Nom d'utilisateur déjà pris"); return;}
 		if (password.isBlank()) {new Erreur("Mot de passe vide"); return;}
 		user_password.put(user, password);
-		System.out.println("[Serveur] Utilisateur ajouté");
+		JOptionPane.showMessageDialog(null, "Utilisateur ajouté", "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void removeUser(String user) {

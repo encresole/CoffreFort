@@ -65,6 +65,13 @@ public class Serveur implements WindowListener {
 		Connexion connexion = storage.getConnexions().get(id);
 		PrintWriter out = connexion.getOut();
 		Boolean reussi = auth.ok(username, password);
+		if (!reussi) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 		connexion.setUser(reussi ? username : null);
 		out.println("LOGIN;"+reussi.toString());
 		return reussi;
