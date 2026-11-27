@@ -68,6 +68,10 @@ public class Serveur implements WindowListener {
 	private Boolean connexion(Integer id, String username, String password) {
 		Connexion connexion = storage.getConnexions().get(id);
 		PrintWriter out = connexion.getOut();
+		if (auth.estBloque(username)) {
+			out.println("ERREUR;Trop de tentatives, réessayez dans " + Configs.DUREE_BLOCAGE / 1000 + " secondes maximum");
+			return false;
+		}
 		Boolean reussi = auth.ok(username, password);
 		if (!reussi) {
 			try {
@@ -76,8 +80,16 @@ public class Serveur implements WindowListener {
 				Thread.currentThread().interrupt();
 			}
 		}
-		connexion.setUser(reussi ? username : null);
-		out.println("LOGIN;"+reussi.toString());
+		if (reussi) {
+			connexion.setUser(username);
+			out.println("LOGIN;true");
+		} else {
+			connexion.setUser(null);
+			int restantes = auth.tentativesRestantes(username);
+			String suite = restantes > 0 ? "Tentatives restantes : " + restantes
+					: "Compte bloqué " + Configs.DUREE_BLOCAGE / 1000 + " secondes";
+			out.println("ERREUR;Mauvais nom d'utilisateur ou mot de passe. " + suite);
+		}
 		return reussi;
 	}
 	

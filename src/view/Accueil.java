@@ -30,7 +30,6 @@ public class Accueil extends JPanel {
 		this.viewManager = viewManager;
 		this.setLayout(new BorderLayout(5, 5));
 
-		// titre au centre, déconnexion à droite
 		JPanel entete = new JPanel(new BorderLayout());
 		entete.add(new JLabel("Mes fichiers", JLabel.CENTER), BorderLayout.CENTER);
 		entete.add(deconnexion, BorderLayout.EAST);

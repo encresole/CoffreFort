@@ -97,8 +97,6 @@ public class Client implements WindowListener {
 		if (message.equals("true")) {
 			ui.showAccueil();
 			out.println(id.toString()+";LIST");
-		} else {
-			new Erreur("Mauvais nom d'utilisateur ou mot de passe");
 		}
 	}
 
