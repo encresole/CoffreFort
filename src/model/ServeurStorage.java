@@ -3,8 +3,6 @@ package model;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import controller.Erreur;
 
 public class ServeurStorage {
@@ -18,11 +16,9 @@ public class ServeurStorage {
 		return user_password.containsKey(user);
 	}
 	
-	public void addUser(String user, String password) {
-		if (containsUser(user)) {new Erreur("Nom d'utilisateur déjà pris"); return;}
-		if (password.isBlank()) {new Erreur("Mot de passe vide"); return;}
-		user_password.put(user, password);
-		JOptionPane.showMessageDialog(null, "Utilisateur ajouté", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+	public boolean addUser(String user, String password) {
+		return user_password.putIfAbsent(user, password) == null;
 	}
 	
 	public void removeUser(String user) {
@@ -39,10 +35,7 @@ public class ServeurStorage {
 	
 
 	public String getPassword(String user) {
-		if (!containsUser(user)) {
-			new Erreur("L'utilisateur n'existe pas");
-			return "";
-		}
+		if (!containsUser(user)) return "";
 		System.out.println("[Serveur] Utilisateur trouvé");
 		return user_password.get(user);
 	}

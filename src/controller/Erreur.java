@@ -19,7 +19,7 @@ public class Erreur extends Error {
 		JPanel center = new JPanel();
 		center.setLayout(new GridBagLayout());
 
-		JLabel indication = new JLabel(erreur);
+		JLabel indication = new JLabel("<html><body style='width: 180px; text-align: center'>" + erreur + "</body></html>");
 		center.add(indication);
 		frame.add(center);
 		

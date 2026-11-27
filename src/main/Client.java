@@ -67,6 +67,9 @@ public class Client implements WindowListener {
 				System.out.println("id set");
 			} else if (parties[0].equals("LOGIN")) {
 				traiteConnexion(parties[1]);
+			} else if (parties[0].equals("SIGNUP")) {
+				JOptionPane.showMessageDialog(ui, "Compte créé, vous pouvez vous connecter");
+				ui.showConnexion();
 			} else {
 				System.out.println("[Client] Message lu : " + message);
 			}
@@ -81,6 +84,10 @@ public class Client implements WindowListener {
 	}
 	
 	public void creationCompte(String user, String password) {
+		if (user.contains(";")) {
+			new Erreur("Le nom d'utilisateur ne doit pas contenir \";\"");
+			return;
+		}
 		out.println(id.toString()+";SIGNUP;"+user+";"+password);
 	}
 	

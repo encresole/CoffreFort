@@ -40,13 +40,14 @@ public class Serveur implements WindowListener {
 	}
 
 	public void interprete(String message) {
-		String[] parties = message.split(";");
+		// 4 parties au maximum : un mot de passe peut contenir ";" ou être vide
+		String[] parties = message.split(";", 4);
 		if (parties.length >= 2 && (parties[1].equals("PUT") || parties[1].equals("LIST")
 				|| parties[1].equals("GET") || parties[1].equals("DELETE"))) {
 			fichier(Integer.parseInt(parties[0]), parties);
 		} else if (parties.length == 4) {
 			if (parties[1].equals("SIGNUP")) {
-				creation(parties[2], parties[3]);
+				creation(Integer.parseInt(parties[0]), parties[2], parties[3]);
 			} else if (parties[1].equals("LOGIN")) {
 				connexion(Integer.parseInt(parties[0]), parties[2], parties[3]);
 			} else {
@@ -57,8 +58,10 @@ public class Serveur implements WindowListener {
 		}
 	}
 	
-	private void creation(String username, String password) {
-		auth.addUser(username, password);
+	private void creation(Integer id, String username, String password) {
+		PrintWriter out = storage.getConnexions().get(id).getOut();
+		String refus = auth.addUser(username, password);
+		out.println(refus == null ? "SIGNUP;true" : "ERREUR;" + refus);
 	}
 	
 	private Boolean connexion(Integer id, String username, String password) {
