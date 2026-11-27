@@ -40,11 +40,12 @@ public class Serveur implements WindowListener {
 	}
 
 	public void interprete(String message) {
-		// 4 parties au maximum : un mot de passe peut contenir ";" ou être vide
 		String[] parties = message.split(";", 4);
 		if (parties.length >= 2 && (parties[1].equals("PUT") || parties[1].equals("LIST")
 				|| parties[1].equals("GET") || parties[1].equals("DELETE"))) {
 			fichier(Integer.parseInt(parties[0]), parties);
+		} else if (parties.length == 2 && parties[1].equals("LOGOUT")) {
+			storage.getConnexions().get(Integer.parseInt(parties[0])).setUser(null);
 		} else if (parties.length == 4) {
 			if (parties[1].equals("SIGNUP")) {
 				creation(Integer.parseInt(parties[0]), parties[2], parties[3]);

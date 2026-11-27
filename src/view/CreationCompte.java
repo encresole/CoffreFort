@@ -1,7 +1,9 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,15 +18,13 @@ import controller.Erreur;
 public class CreationCompte  extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
-	JPanel infos = new JPanel();
 	JLabel indicationUsername = new JLabel("Nom d'utilisateur :");
 	JLabel indicationMotDePasse = new JLabel("Mot de passe :");
 	JLabel indicationConfirmationMotDePasse = new JLabel("Réecrire le mot de passe :");
-	
-	JPanel reponses = new JPanel();
-	JTextField username = new JTextField();
-	JTextField password = new JTextField();
-	JPasswordField confirm = new JPasswordField();
+
+	JTextField username = new JTextField(18);
+	JTextField password = new JTextField(18);
+	JPasswordField confirm = new JPasswordField(18);
 	
 	JPanel actions = new JPanel();
 	JButton valider = new JButton("Valider la création");
@@ -32,19 +32,29 @@ public class CreationCompte  extends JPanel{
 	
 	public CreationCompte(ViewManager viewManager) {
 		this.setLayout(new BorderLayout());
-		
-		infos.setLayout(new GridLayout(3, 1));
-		infos.add(indicationUsername);
-		infos.add(indicationMotDePasse);
-		infos.add(indicationConfirmationMotDePasse);
-		this.add(infos, BorderLayout.WEST);
-		
-		reponses.setLayout(new GridLayout(3, 1));
-		reponses.add(username);
-		reponses.add(password);
-		reponses.add(confirm);
-		this.add(reponses, BorderLayout.CENTER);
-	
+
+		JPanel formulaire = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.anchor = GridBagConstraints.WEST;
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		formulaire.add(indicationUsername, gbc);
+		gbc.gridy = 1;
+		formulaire.add(indicationMotDePasse, gbc);
+		gbc.gridy = 2;
+		formulaire.add(indicationConfirmationMotDePasse, gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		formulaire.add(username, gbc);
+		gbc.gridy = 1;
+		formulaire.add(password, gbc);
+		gbc.gridy = 2;
+		formulaire.add(confirm, gbc);
+		this.add(formulaire, BorderLayout.CENTER);
+
 		valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

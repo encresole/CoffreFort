@@ -24,12 +24,17 @@ public class Accueil extends JPanel {
 	private final JButton importer = new JButton("Importer un fichier");
 	private final JButton telecharger = new JButton("Télécharger");
 	private final JButton supprimer = new JButton("Supprimer");
+	private final JButton deconnexion = new JButton("Se déconnecter");
 
 	public Accueil(ViewManager viewManager) {
 		this.viewManager = viewManager;
 		this.setLayout(new BorderLayout(5, 5));
 
-		this.add(new JLabel("Mes fichiers", JLabel.CENTER), BorderLayout.NORTH);
+		// titre au centre, déconnexion à droite
+		JPanel entete = new JPanel(new BorderLayout());
+		entete.add(new JLabel("Mes fichiers", JLabel.CENTER), BorderLayout.CENTER);
+		entete.add(deconnexion, BorderLayout.EAST);
+		this.add(entete, BorderLayout.NORTH);
 
 		liste.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		this.add(new JScrollPane(liste), BorderLayout.CENTER);
@@ -46,6 +51,7 @@ public class Accueil extends JPanel {
 		importer.addActionListener(e -> importerFichier());
 		telecharger.addActionListener(e -> telechargerSelection());
 		supprimer.addActionListener(e -> supprimerSelection());
+		deconnexion.addActionListener(e -> viewManager.client.deconnexion());
 	}
 
 	private void majBoutons() {

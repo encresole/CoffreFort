@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -58,6 +59,13 @@ public class ViewManager extends JFrame {
 
 	public void setFichiers(List<String> noms) {
 		accueil.setFichiers(noms);
+	}
+
+	/** Efface les données de l'utilisateur et revient à la première page. */
+	public void deconnecte() {
+		accueil.setFichiers(new ArrayList<>());
+		connexion.vider();
+		showFenetrePrincipale();
 	}
 
 }

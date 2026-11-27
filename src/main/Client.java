@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Base64;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.Erreur;
 import model.Configs;
@@ -100,6 +102,12 @@ public class Client implements WindowListener {
 		}
 	}
 
+	public void deconnexion() {
+		out.println(id.toString()+";LOGOUT");
+		dossier = null;
+		ui.deconnecte();
+	}
+
 	public void envoieFichier(File fichier) {
 		if (fichier.length() == 0 || fichier.length() > Configs.TAILLE_MAX || fichier.getName().contains(";")) {
 			new Erreur("Fichier refusé (vide, plus de 10 Mo ou nom avec \";\")");
@@ -177,6 +185,11 @@ public class Client implements WindowListener {
 	}
 	
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ReflectiveOperationException | UnsupportedLookAndFeelException e) {
+			System.err.println("[Client] Apparence Nimbus indisponible : " + e.getMessage());
+		}
 		new Client();
 	}
 }
